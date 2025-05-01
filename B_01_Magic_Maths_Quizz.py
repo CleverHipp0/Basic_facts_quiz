@@ -238,6 +238,7 @@ if want_instructions == "yes":
             |   Good luck maths wizard  |
     ''')
 
+# asks how many questions the user wants to answer per round
 questions = int_check("How many Questions per round? ", 1)
 
 # Set the lives to 3
@@ -334,8 +335,13 @@ for current_level in range(1, 6):
         # adds spacing
         print()
 
+        # adds the response to the history list
         history.append(user_correct)
+
+        # calculates whether any lives need to be deducted or added
         lives += cal_lives(user_correct, power_up, lives)
+
+        # adds 1 to the counter
         questions_asked += 1
 
     # exits the loop if the exit code is entered, or they die.
@@ -356,8 +362,8 @@ if len(history) != levels_played * questions:
 # asks if the user wants to see the stats
 see_stats = yes_no("Do you want to see your statistics? ")
 
-# if the user wants to see the stats show them
-if see_stats == "yes":
+# if the user wants to see the stats show them if the user played any rounds
+if see_stats == "yes" and len(history) != 0:
 
     # heading
     statement_generator("📊", 3, "Statistics")
@@ -366,16 +372,26 @@ if see_stats == "yes":
     # sub heading
     print("Overall: ")
 
-    # finds the overall percentage
+    # finds the overall percentage of correct incorrect and close responses
     find_percentage(count_list(history))
     print()
 
     # asks the user if they want to see the stats for every round
     see_stat_advanced = yes_no("Do you want to see your statistics for every round? ")
 
-    if see_stats == "yes":
+    # calculates each rounds statistics
+    if see_stat_advanced == "yes" and levels_played != 0:
+        # calculates the statistics for each round
         list_splitter(history, levels_played, questions)
 
+    elif see_stat_advanced == "yes" and levels_played == 0:
+        # max number of rounds is 5, calculates the statistics for each round
+        list_splitter(history, 5, questions)
 
+    else:
+        # catch all error
+        print("Error")
 
-
+else:
+    # if the user didn't play any rounds tell them so
+    statement_generator("🐔", 3, "You played 0 rounds")
