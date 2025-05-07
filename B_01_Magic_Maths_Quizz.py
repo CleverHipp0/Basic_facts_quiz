@@ -191,20 +191,20 @@ def list_splitter(list_to_split, rounds_played, questions_per_round, name_list=N
     round_stats = []
 
     # cycles through levels
-    for item in range(0, rounds_played):
+    for up_to_level in range(0, rounds_played):
 
         # shows the level
         if name_list is not None:
-            print(f"\nLevel {name_list[item]}")
+            print(f"\nLevel {name_list[up_to_level]}")
 
         else:
-            print(f"\nLevel {item + 1}")
+            print(f"\nLevel {up_to_level + 1}")
 
         # cycles through questions
         for i in range(0, questions_per_round):
 
             # splits the list into the desired segments
-            round_stats.append(list_to_split[item + i + 1])
+            round_stats.append(list_to_split[(up_to_level * 2) + i])
 
         # does the counting
         count = count_list(round_stats)
@@ -311,9 +311,10 @@ for current_level in range(1, 6):
         if user_answer == "xxx":
             # An emergency exit incase the user wants to quit
             emergency_exit = "yes"
+            user_correct = "-"
             break
 
-        if user_answer == correct_answer:
+        elif user_answer == correct_answer:
             statement_generator("!", 3, "CORRECT")
             # Stores the status of the answer that the user gave to be used in lives and stats
             user_correct = "yes"
@@ -354,7 +355,7 @@ for current_level in range(1, 6):
 if len(history) != levels_played * questions:
 
     # finds the amount of blanks to add (probably a better way)
-    for n in range(len(history) - (levels_played * questions)):
+    for n in range((levels_played * questions) - len(history)):
 
         # adds blanks
         history.append("-")
